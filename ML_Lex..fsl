@@ -81,13 +81,19 @@ let ops =
 	] |> Map.of_list
 
 
-	let char = ['a'-'z' 'A'-'Z']
+	let letter = ['a'-'z' 'A'-'Z']
 	let digit = ['0'-'9']
 	let hex = ['a'-'f' 'A'-'F']
-	let int = '~'?digit+
+	let numeral = '~'?digit+
 	let whitespace = [' ' '\t']
 	let newline = "\n\r" | '\n' | '\r'
 	let hexdigit = digit | hexdigit
+	let ident_symbol = ['!' '%' '&' '$' '#' '+' '-' '/' ':' '<' '=' '>' '?' '@' '\' '~' '`' '^' '|' '*']
+	let alpanumeric_ident = letter(letter | digit | '_' | '\'')*
+	let ident = alphanumeric_ident | ident_symbol
+	let type_var = '('?)(_?)alphanumeric_ident
+	let label = ident | digit+
+
 
 	rule tokenize = parse
 	| whitespace      { tokenise lexbuf }
